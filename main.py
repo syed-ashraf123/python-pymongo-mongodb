@@ -1,12 +1,27 @@
 import pymongo
-myclient = pymongo.MongoClient("mongodb+srv://syed:7275456455@cluster0.hlj0c.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
-# print(myclient.list_database_names())
-mydb=myclient["myFirstDatabase12"]
-# print(mydb.list_collection_names())
-mycol = mydb["customers11"]
-mydict = { "name": "John84512", "address": "445" }
-# x = mycol.insert_one(mydict)
+myclient=pymongo.MongoClient("mongodb+srv://zano:7275456455@cluster0.05tdw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+
+#Check Connection
+# print(myclient)
+
+#Databse Selection/Creation
+mydb=myclient["PythonTutorial"]
+
+#Collection Selection/Creation  --  Table
+mycol=mydb["FirstCollection"]
+
+#Inserting One Data
+# mydict={"name":"John","address":"NY"}
+# x=mycol.insert_one(mydict)
 # print(x.inserted_id)
+
+#Inserting Multiple by loop
+# mydict=[{"name":"John","address":"NY"},{"name":"Abs","address":"USA"}]
+# for i in mydict:
+#     mycol.insert_one(i)
+
+
+#Insert Multiple
 # mylist = [
 #   { "name": "Amy", "address": "Apple st 652"},
 #   { "name": "Hannah", "address": "Mountain 21"},
@@ -21,12 +36,11 @@ mydict = { "name": "John84512", "address": "445" }
 #   { "name": "Chuck", "address": "Main Road 989"},
 #   { "name": "Viola", "address": "Sideway 1633"}
 # ]
-
-# # x = mycol.insert_many(mylist)
-
-# #print list of the _id values of the inserted documents:
+# x=mycol.insert_many(mylist)
 # print(x.inserted_ids)
 
+
+# Inserting your own ID
 # mylist = [
 #   { "_id": 1, "name": "John", "address": "Highway 37"},
 #   { "_id": 2, "name": "Peter", "address": "Lowstreet 27"},
@@ -43,85 +57,63 @@ mydict = { "name": "John84512", "address": "445" }
 #   { "_id": 13, "name": "Chuck", "address": "Main Road 989"},
 #   { "_id": 14, "name": "Viola", "address": "Sideway 1633"}
 # ]
+# mycol.insert_many(mylist)
 
-# # x = mycol.insert_many(mylist)
-
-# #print list of the _id values of the inserted documents:
-# print(x.inserted_ids)
-
-x = mycol.find_one()
-
+#Fetching one object/row
+# x=mycol.find_one()
 # print(x)
 
-# for x in mycol.find():
-#   print(x)
+# Fetching all object/row
+# x=mycol.find()
+# for obj in x:
+#     print(obj)
 
-# for x in mycol.find({},{ "_id": 0, "name": 1, "address": 1 }):
-#   print(x)
+#Fetching Specific Keys
+# x=mycol.find({},{"_id":0,"name":0})
+# for obj in x:
+#     print(obj)
 
-# for x in mycol.find({},{ "address": 0 }):
-#   print(x)
+#Fetching specific Object
+# myquery={"name":"Viola"}
+# x=mycol.find(myquery)
+# for obj in x:
+#     print(obj)
 
-# myquery = { "address": "Park Lane 38" }
-
-# mydoc = mycol.find(myquery)
-
-# for x in mydoc:
-#   print(x)
-
-# Delete the document with the address "Mountain 21":
-# myquery = { "address": "Mountain 21" }
-
+#Deleting Specific Object
+# myquery={"name":"Viola"}
 # mycol.delete_one(myquery)
 
-# x = mycol.delete_many({})
+#Deleting multiple Specific Object
+# myquery={"name":"Chuck"}
+# mycol.delete_many(myquery)
 
-# print(x.deleted_count, " documents deleted.")
-
-# Del Collection
+#Deleting Whole Collection/Table
 # mycol.drop()
 
-# Update One
-# myquery = { "address": "Valley 345" }
-# newvalues = { "$set": { "address": "Canyon 123" } }
+#Update One
+# myquery={"name":"Viola"}
+# newvalues={"$set":{"address":"Canyon 123"}}
 
-# mycol.update_one(myquery, newvalues)
+# mycol.update_one(myquery,newvalues)
 
+#Fetching all values
+# myresult=mycol.find()
+# for obj in myresult:
+#     print(obj)
 
-# myresult = mycol.find().limit(5)
+#Finding Values that start after O
+# myquery={"address":{"$gt":"O"}}
+# x=mycol.find(myquery)
+# for obj in x:
+#     print(obj)
 
-# #print the result:
-# for x in myresult:
-#   print(x)
+#Finding Values that start With O
+# myquery={"address":{"$regex":"^O"}}
+# x=mycol.find(myquery)
+# for obj in x:
+#     print(obj)
 
-
-
-
-# Find documents where the address starts with the letter "S" or higher:
-# myquery = { "address": { "$gt": "S" } }
-
-# mydoc = mycol.find(myquery)
-
-# for x in mydoc:
-#   print(x)
-
-# Find documents where the address starts with the letter "S":
-# myquery = { "address": { "$regex": "^S" } }
-
-# mydoc = mycol.find(myquery)
-
-# for x in mydoc:
-#   print(x)
-
-# Sort the result alphabetically by name:
-# mydoc = mycol.find().sort("name")
-
-# for x in mydoc:
-#   print(x)
-
-# Sort the result reverse alphabetically by name:
-# mydoc = mycol.find().sort("name", -1)
-
-# for x in mydoc:
-#   print(x)
-
+#Finding Values in Sorted Order
+x=mycol.find().sort("name")
+for obj in x:
+    print(obj)
